@@ -1,5 +1,7 @@
 import torch
+import numpy as np
 from torch.utils.data import Dataset
+from torchvision.transforms import ToTensor
 
 
 class FUNSDLayoutLMV1Dataset(Dataset):
@@ -51,6 +53,10 @@ class FUNSDLayoutLMV1Dataset(Dataset):
 
         token_bboxes = torch.tensor(token_bboxes, dtype=torch.long)
         token_labels = torch.tensor(token_labels, dtype=torch.long)
+
+        img_np = np.array(image)
+        img_np = np.transpose(img_np, (1, 2, 0))
+        img_tensor = ToTensor()(img_np)
         
         return {
             "input_ids": encoding["input_ids"].squeeze(0),
@@ -58,6 +64,6 @@ class FUNSDLayoutLMV1Dataset(Dataset):
             "attention_mask": encoding["attention_mask"].squeeze(0),
             "token_type_ids": encoding["token_type_ids"].squeeze(0),
             "labels": token_labels,
-            "image": image,
+            "image": img_tensor,
         }
     
