@@ -44,6 +44,11 @@ class FUNSDLayoutLMV1Dataset(Dataset):
                 token_bboxes.append(bboxes[word_id])
                 token_labels.append(labels[word_id])
 
+        pad_len = self.max_length - len(token_bboxes)
+        if pad_len > 0:
+            token_bboxes.extend([[0, 0, 0, 0]] * pad_len)
+            token_labels.extend([self.pad_token_label_id] * pad_len)
+
         token_bboxes = torch.tensor(token_bboxes, dtype=torch.long)
         token_labels = torch.tensor(token_labels, dtype=torch.long)
         
