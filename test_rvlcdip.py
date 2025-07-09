@@ -26,6 +26,8 @@ def main():
     )
 
     print(outputs.last_hidden_state.shape)
+    print(batch['image'].shape)
+    print(batch['label'].shape)
 
 if __name__ == "__main__":
     main()
